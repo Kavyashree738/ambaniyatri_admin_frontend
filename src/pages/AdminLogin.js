@@ -6,27 +6,46 @@ import "../styles/AdminLogin.css";
 function AdminLogin({ onLogin }) {
 const loginWithGoogle = async () => {
   try {
+    console.log("🔵 Step 1: Opening Google popup...");
     const result = await signInWithPopup(auth, googleProvider);
 
-    // 🔥 Get token ONLY to verify admin once
+    console.log("🟢 Step 2: Google sign-in success");
+    console.log("📧 Logged-in email:", result.user.email);
+
+    console.log("🔵 Step 3: Fetching Firebase ID token...");
     const idToken = await result.user.getIdToken(true);
 
-    const res = await fetch("https://ambaniyatri-admin.onrender.com/api/admin/login", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${idToken}`,
-      },
-    });
+    console.log("🟢 Step 4: Firebase ID token received");
+    console.log("🧾 Token length:", idToken.length);
 
-    if (!res.ok) throw new Error();
+    console.log("🔵 Step 5: Calling backend /api/admin/login...");
+    const res = await fetch(
+      "https://ambaniyatri-admin.onrender.com/api/admin/login",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      }
+    );
 
-    // ❌ do NOT store token
+    console.log("📡 Backend response status:", res.status);
+
+    const data = await res.json();
+    console.log("📦 Backend response body:", data);
+
+    if (!res.ok) {
+      throw new Error(data?.message || "Login failed");
+    }
+
+    console.log("✅ Step 6: Admin verified successfully");
     onLogin();
-  } catch {
-    alert("You are not authorized as admin");
+  } catch (err) {
+    console.error("❌ ADMIN LOGIN FAILED");
+    console.error("🧨 Error object:", err);
+    alert("Admin login failed. Check console logs.");
   }
 };
-
 
   return (
     <div className="admin-login-page">
