@@ -1,0 +1,332 @@
+/* ===============================
+   🌐 GLOBAL
+================================ */
+* {
+  box-sizing: border-box;
+}
+
+.admin-dashboard {
+  padding: 20px;
+  min-height: 100vh;
+  background: #f5f7fb;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ===============================
+   🏷️ TITLE
+================================ */
+.dashboard-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 20px;
+}
+
+/* ===============================
+   🔍 SEARCH & FILTER
+================================ */
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.controls input,
+.controls select {
+  padding: 12px 14px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.controls input {
+  flex: 1;
+  min-width: 240px;
+}
+
+.controls input:focus,
+.controls select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ===============================
+   🚗 DRIVER GRID
+================================ */
+.drivers-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 18px;
+}
+
+/* ===============================
+   🧾 DRIVER CARD
+================================ */
+.driver-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.driver-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* ===============================
+   👤 HEADER
+================================ */
+.driver-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.driver-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  color: #111827;
+}
+
+.driver-header p {
+  font-size: 14px;
+  margin: 4px 0;
+  color: #6b7280;
+}
+
+/* 📱 PHONE */
+.phone {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f766e;
+  margin-top: 6px;
+}
+
+/* ===============================
+   🔖 STATUS BADGE
+================================ */
+.status {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.status.pending {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.status.approved {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.status.rejected {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+/* ===============================
+   📄 DOCUMENTS
+================================ */
+.documents {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.doc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.doc-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  word-break: break-word;
+}
+
+/* 👁 VIEW BUTTON */
+.view-btn {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #ffffff;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.view-btn:hover {
+  background: #1e40af;
+}
+
+/* ===============================
+   🛠 ACTIONS
+================================ */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.actions button {
+  flex: 1;
+  padding: 11px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.actions button:hover {
+  transform: translateY(-1px);
+}
+
+/* ✅ APPROVE */
+.actions .approve {
+  background: linear-gradient(135deg, #10b981, #047857);
+  color: #ffffff;
+}
+
+.actions .approve:hover {
+  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.35);
+}
+
+/* ❌ REJECT */
+.actions .reject {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: #ffffff;
+}
+
+.actions .reject:hover {
+  box-shadow: 0 8px 18px rgba(239, 68, 68, 0.35);
+}
+
+/* ===============================
+   💤 EMPTY STATE
+================================ */
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 15px;
+  color: #6b7280;
+}
+
+/* ===============================
+   📱 TABLET (≤ 900px)
+================================ */
+@media (max-width: 900px) {
+  .drivers-list {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+}
+
+/* ===============================
+   📱 MOBILE (≤ 600px)
+================================ */
+@media (max-width: 600px) {
+  .admin-dashboard {
+    padding: 14px;
+  }
+
+  .dashboard-title {
+    font-size: 22px;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .controls input,
+  .controls select {
+    width: 100%;
+  }
+
+  .driver-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .status {
+    margin-top: 6px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .view-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+
+/* ===============================
+   📱 SMALL MOBILE (≤ 400px)
+================================ */
+@media (max-width: 400px) {
+  .driver-card {
+    padding: 14px;
+  }
+
+  .driver-header h3 {
+    font-size: 16px;
+  }
+
+  .phone {
+    font-size: 13px;
+  }
+}
+.driver-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.driver-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e5e7eb;
+}
+
+.driver-text h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.driver-text p {
+  margin: 2px 0;
+  font-size: 13px;
+  color: #555;
+}
+
+.phone {
+  font-weight: 500;
+  color: #2563eb;
+}

@@ -1,0 +1,74 @@
+/* ================================
+   HEADER WRAPPER
+================================ */
+.admin-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ================================
+   LEFT SECTION
+================================ */
+.header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.company-name {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.panel-tag {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+/* ================================
+   LOGOUT BUTTON
+================================ */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ================================
+   MOBILE RESPONSIVE
+================================ */
+@media (max-width: 600px) {
+  .company-name {
+    font-size: 16px;
+  }
+
+  .panel-tag {
+    font-size: 11px;
+  }
+
+  .logout-btn span {
+    display: none; /* icon-only on mobile */
+  }
+}

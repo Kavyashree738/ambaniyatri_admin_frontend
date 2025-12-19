@@ -1,0 +1,131 @@
+/* Page Background */
+.admin-login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    135deg,
+    #0f2027,
+    #203a43,
+    #2c5364
+  );
+  font-family: "Inter", "Segoe UI", sans-serif;
+  padding: 20px;
+}
+
+/* Card */
+.admin-login-card {
+  width: 100%;
+  max-width: 460px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 45px 35px;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.7s ease;
+}
+
+/* Logo */
+.admin-logo {
+  width: 120px;
+  margin-bottom: 18px;
+}
+
+/* Title */
+.admin-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1e3c72;
+  margin-bottom: 6px;
+}
+
+/* Subtitle */
+.admin-subtitle {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+/* Info Section */
+.admin-info {
+  text-align: left;
+  background: #f5f8ff;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 25px;
+}
+
+.admin-info div {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+/* Google Button */
+.google-login-btn {
+  width: 100%;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #d0d7ff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.google-login-btn img {
+  width: 22px;
+  height: 22px;
+}
+
+.google-login-btn:hover {
+  background: #eef3ff;
+  border-color: #1e3c72;
+  transform: translateY(-2px);
+}
+
+/* Footer */
+.secure-note {
+  margin-top: 18px;
+  font-size: 12px;
+  color: #666;
+}
+
+.company {
+  margin-top: 18px;
+  font-size: 12px;
+  color: #777;
+}
+
+/* Animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .admin-login-card {
+    padding: 35px 22px;
+  }
+
+  .admin-title {
+    font-size: 24px;
+  }
+
+  .admin-logo {
+    width: 95px;
+  }
+}
