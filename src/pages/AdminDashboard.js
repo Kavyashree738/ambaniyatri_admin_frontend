@@ -41,6 +41,13 @@ export default function AdminDashboard() {
   }
 };
 
+const isImageFile = (file) => {
+  if (!file) return false;
+  const ext = file.split(".").pop().toLowerCase();
+  return ["jpg", "jpeg", "png", "webp"].includes(ext);
+};
+
+
 
   // ==================================================
   // 🔄 LOAD ALL DRIVERS (MONGODB)
@@ -183,21 +190,36 @@ const updateStatus = async (userId, status) => {
 
               {/* 📄 DOCUMENTS */}
               <div className="documents">
-                {Object.entries(driver.files).map(([key, file]) => (
-                  <div className="doc-row" key={key}>
-                    <span className="doc-name">
-                      {key.replace("_", " ").toUpperCase()}
-                    </span>
-                    <a
-                      href={`https://ambaniyatri-admin.onrender.com/api/documents/file/${file}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="view-btn"
-                    >
-                      View
-                    </a>
-                  </div>
-                ))}
+                {Object.entries(driver.files).map(([key, file]) => {
+  const fileUrl = `https://ambaniyatri-admin.onrender.com/api/documents/file/${file}`;
+
+  return (
+    <div className="doc-row" key={key}>
+      <span className="doc-name">
+        {key.replace("_", " ").toUpperCase()}
+      </span>
+
+      <a
+        href={fileUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="file-preview"
+      >
+        {isImageFile(file) ? (
+          <img
+            src={fileUrl}
+            alt={key}
+            className="doc-thumbnail"
+            onError={(e) => (e.target.style.display = "none")}
+          />
+        ) : (
+          <span className="doc-icon">📄</span>
+        )}
+      </a>
+    </div>
+  );
+})}
+
               </div>
 
               {/* 🛠 ACTIONS */}
