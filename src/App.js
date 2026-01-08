@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
+import MediaLibrary from "./pages/MediaLibrary";
 
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import PromoManager from "./pages/PromoManager";
 import Header from "./pages/Header";
 
 export default function App() {
@@ -26,14 +29,40 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-
-  if (!isAdmin) return <AdminLogin />;
+  if (loading) {
+    return <div style={{ padding: 40 }}>Loading...</div>;
+  }
 
   return (
-    <>
-      <Header onLogout={() => auth.signOut()} />
-      <AdminDashboard />
-    </>
+    <BrowserRouter>
+      {isAdmin && <Header onLogout={() => auth.signOut()} />}
+
+      <Routes>
+        {/* ================= PUBLIC ================= */}
+        <Route
+          path="/login"
+          element={isAdmin ? <Navigate to="/" /> : <AdminLogin />}
+        />
+
+        {/* ================= PROTECTED ================= */}
+        <Route
+          path="/"
+          element={isAdmin ? <AdminDashboard /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/promotions"
+          element={isAdmin ? <PromoManager /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/media-library"
+          element={isAdmin ? <MediaLibrary /> : <Navigate to="/login" />}
+        />
+
+        {/* ================= FALLBACK ================= */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
