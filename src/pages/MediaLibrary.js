@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/mediaLibrary.css";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = "https://ambaniyatri-admin.onrender.com";
 
 export default function MediaLibrary() {
   const [images, setImages] = useState([]);
@@ -162,3 +162,4 @@ export default function MediaLibrary() {
     </div>
   );
 }
+
