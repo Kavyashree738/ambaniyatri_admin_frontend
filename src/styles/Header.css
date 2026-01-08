@@ -1,74 +1,118 @@
-/* ================================
-   HEADER WRAPPER
-================================ */
+/* ================= BASE ================= */
 .admin-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  width: 100%;
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
-  color: #ffffff;
+  height: 64px;
+  background: #0f172a;
+  color: #fff;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-/* ================================
-   LEFT SECTION
-================================ */
 .header-left {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 28px;
 }
 
 .company-name {
   font-size: 18px;
-  font-weight: 700;
-  margin: 0;
-  line-height: 1.2;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.panel-tag {
-  font-size: 12px;
-  opacity: 0.85;
+/* ================= DESKTOP NAV ================= */
+.admin-nav {
+  display: flex;
+  gap: 18px;
 }
 
-/* ================================
-   LOGOUT BUTTON
-================================ */
+.admin-nav a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.admin-nav a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.admin-nav a.active {
+  background: #2563eb;
+  color: #fff;
+}
+
+/* ================= LOGOUT ================= */
 .logout-btn {
+  background: #ef4444;
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.15);
-  border: none;
-  color: #ffffff;
-  padding: 8px 14px;
-  border-radius: 10px;
-  cursor: pointer;
+  gap: 6px;
   font-size: 14px;
-  font-weight: 600;
 }
 
 .logout-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: #dc2626;
 }
 
-/* ================================
-   MOBILE RESPONSIVE
-================================ */
-@media (max-width: 600px) {
-  .company-name {
-    font-size: 16px;
-  }
+/* ================= BOTTOM NAV (MOBILE) ================= */
+.bottom-nav {
+  display: none;
+}
 
-  .panel-tag {
-    font-size: 11px;
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  /* hide desktop nav */
+  .desktop-nav {
+    display: none;
   }
 
   .logout-btn span {
-    display: none; /* icon-only on mobile */
+    display: none;
+  }
+
+  /* bottom nav */
+  .bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .bottom-nav a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .bottom-nav a svg {
+    font-size: 20px;
+  }
+
+  .bottom-nav a.active {
+    color: #3b82f6;
   }
 }
