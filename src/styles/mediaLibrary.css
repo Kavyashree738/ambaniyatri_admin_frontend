@@ -1,0 +1,141 @@
+/* ================= PAGE ================= */
+.media-page {
+  padding: 24px;
+  font-family: "Poppins", sans-serif;
+  background: #f4f6fb;
+  min-height: 100vh;
+  margin-bottom:100px;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 20px;
+  margin: 24px 0 12px;
+}
+
+.empty-text {
+  color: #777;
+  font-size: 14px;
+}
+
+/* ================= GRID ================= */
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+/* ================= CARD ================= */
+.media-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease;
+}
+
+.media-card:hover {
+  transform: translateY(-3px);
+}
+
+/* ================= MEDIA ================= */
+.media-card img,
+.media-card video {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ================= INFO ================= */
+.media-info {
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  background: #fafafa;
+  border-top: 1px solid #eee;
+}
+/* ================= PAGE ================= */
+.media-page {
+  padding: 24px;
+  font-family: "Poppins", sans-serif;
+  background: #f4f6fb;
+  min-height: 100vh;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 20px;
+  margin: 24px 0 12px;
+}
+
+.empty-text {
+  color: #777;
+  font-size: 14px;
+}
+
+/* ================= GRID ================= */
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+/* ================= CARD ================= */
+.media-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease;
+}
+
+.media-card:hover {
+  transform: translateY(-3px);
+}
+
+/* ================= MEDIA ================= */
+.media-card img,
+.media-card video {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ================= INFO ================= */
+.media-info {
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  background: #fafafa;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ================= DELETE BUTTON ================= */
+.delete-btn {
+  background: #e74c3c;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
