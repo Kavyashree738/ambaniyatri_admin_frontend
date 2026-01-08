@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "../styles/promoManager.css";
 
-const API_BASE = "http://localhost:5000"; // 🔁 change if needed
+const API_BASE = "https://ambaniyatri-admin.onrender.com"; // 🔁 change if needed
 
 export default function PromoManager() {
   const fileInputRef = useRef(null);
@@ -256,3 +256,4 @@ export default function PromoManager() {
     </div>
   );
 }
+
