@@ -24,7 +24,6 @@ export default function PromoManager() {
     try {
       const res = await axios.get(`${API_BASE}/api/promotions`);
       console.log("✅ Promotions fetched:", res.data);
-
       setPromos(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("❌ loadPromos error:", err?.response || err);
@@ -42,12 +41,11 @@ export default function PromoManager() {
   ================================ */
   const onFileChange = (e) => {
     const f = e.target.files?.[0];
-    console.log("📂 onFileChange fired:", f);
+    console.log("📂 onFileChange:", f);
 
     if (!f) return;
 
     if (!f.type.startsWith("image/") && !f.type.startsWith("video/")) {
-      console.error("❌ Invalid file type:", f.type);
       alert("Only image or video allowed");
       return;
     }
@@ -56,7 +54,7 @@ export default function PromoManager() {
     setType(f.type.startsWith("video") ? "video" : "image");
 
     const previewUrl = URL.createObjectURL(f);
-    console.log("🖼️ Preview URL created:", previewUrl);
+    console.log("🖼️ Preview:", previewUrl);
     setPreview(previewUrl);
   };
 
@@ -67,7 +65,6 @@ export default function PromoManager() {
     console.log("🚀 uploadPromo clicked");
 
     if (!file) {
-      console.error("❌ No file selected");
       alert("Select file");
       return;
     }
@@ -77,10 +74,7 @@ export default function PromoManager() {
     form.append("title", title);
     form.append("type", type);
 
-    console.log("📦 FormData prepared:");
-    for (let pair of form.entries()) {
-      console.log(`   → ${pair[0]}:`, pair[1]);
-    }
+    console.log("📦 Uploading file promo:", { title, type });
 
     setUploading(true);
 
@@ -91,9 +85,8 @@ export default function PromoManager() {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      console.log("✅ Upload response:", res.data);
-
-      alert("✅ Uploaded successfully");
+      console.log("✅ Upload success:", res.data);
+      alert("Uploaded successfully");
 
       setFile(null);
       setPreview("");
@@ -101,7 +94,7 @@ export default function PromoManager() {
       loadPromos();
     } catch (err) {
       console.error("❌ Upload error:", err?.response || err);
-      alert(err?.response?.data?.message || "Upload failed");
+      alert("Upload failed");
     } finally {
       setUploading(false);
     }
@@ -112,9 +105,10 @@ export default function PromoManager() {
   ================================ */
   const uploadYoutubePromo = async () => {
     console.log("▶ uploadYoutubePromo clicked");
+    console.log("📺 Input:", youtubeUrl);
 
     if (!youtubeUrl) {
-      alert("Enter YouTube URL");
+      alert("Paste YouTube URL or embed code");
       return;
     }
 
@@ -124,9 +118,8 @@ export default function PromoManager() {
         url: youtubeUrl,
       });
 
-      console.log("✅ YouTube upload response:", res.data);
-
-      alert("✅ YouTube promotion added");
+      console.log("✅ YouTube saved:", res.data);
+      alert("YouTube promotion added");
 
       setYoutubeUrl("");
       setTitle("");
@@ -141,15 +134,13 @@ export default function PromoManager() {
      🔁 TOGGLE ACTIVE
   ================================ */
   const toggleActive = async (id, active) => {
-    console.log(`🔁 toggleActive id=${id}, current=${active}`);
+    console.log(`🔁 toggleActive: ${id} -> ${!active}`);
 
     try {
-      const res = await axios.patch(
-        `${API_BASE}/api/promotions/${id}`,
-        { active: !active }
-      );
+      await axios.patch(`${API_BASE}/api/promotions/${id}`, {
+        active: !active,
+      });
 
-      console.log("✅ toggleActive response:", res.data);
       loadPromos();
     } catch (err) {
       console.error("❌ toggleActive error:", err?.response || err);
@@ -158,7 +149,38 @@ export default function PromoManager() {
   };
 
   /* ===============================
-     🧪 DEBUG RENDER
+     🔍 EXTRACT YOUTUBE ID
+  ================================ */
+  const getYoutubeId = (url) => {
+    if (!url) return null;
+
+    // iframe
+    if (url.includes("<iframe")) {
+      const match = url.match(/src="([^"]+)"/);
+      if (!match) return null;
+      url = match[1];
+    }
+
+    // embed url
+    if (url.includes("/embed/")) {
+      return url.split("/embed/")[1].split("?")[0];
+    }
+
+    // watch?v=
+    if (url.includes("v=")) {
+      return url.split("v=")[1].split("&")[0];
+    }
+
+    // youtu.be
+    if (url.includes("youtu.be")) {
+      return url.split("youtu.be/")[1].split("?")[0];
+    }
+
+    return null;
+  };
+
+  /* ===============================
+     🧪 DEBUG
   ================================ */
   useEffect(() => {
     console.log("🎨 Rendering promos:", promos);
@@ -168,16 +190,13 @@ export default function PromoManager() {
     <div className="promo-page">
       <h1 className="page-title">🎯 Home Promotions</h1>
 
-      {/* ================= FILE UPLOAD CARD ================= */}
+      {/* ================= FILE UPLOAD ================= */}
       <div className="upload-card">
         <h3>📤 Upload Image / Video</h3>
 
         <div
           className={`drop-zone ${preview ? "filled" : ""}`}
-          onClick={() => {
-            console.log("🖱️ Drop zone clicked");
-            fileInputRef.current.click();
-          }}
+          onClick={() => fileInputRef.current.click()}
         >
           {preview ? (
             type === "image" ? (
@@ -205,22 +224,18 @@ export default function PromoManager() {
           onChange={(e) => setTitle(e.target.value)}
         />
 
-        <button
-          className="upload-btn"
-          onClick={uploadPromo}
-          disabled={uploading}
-        >
+        <button className="upload-btn" onClick={uploadPromo} disabled={uploading}>
           {uploading ? "Uploading..." : "🚀 Upload Promotion"}
         </button>
       </div>
 
-      {/* ================= YOUTUBE UPLOAD CARD ================= */}
+      {/* ================= YOUTUBE UPLOAD ================= */}
       <div className="upload-card">
         <h3>▶ Add YouTube Promotion</h3>
 
         <input
           className="input"
-          placeholder="Paste YouTube video link"
+          placeholder="Paste YouTube URL or iframe embed code"
           value={youtubeUrl}
           onChange={(e) => setYoutubeUrl(e.target.value)}
         />
@@ -242,7 +257,9 @@ export default function PromoManager() {
 
       <div className="promo-grid">
         {promos.map((p) => {
-          console.log("🧱 Rendering promo card:", p);
+          const youtubeId = getYoutubeId(p.url);
+
+          console.log("🧱 Promo:", p);
 
           return (
             <div key={p._id} className="promo-card">
@@ -255,15 +272,17 @@ export default function PromoManager() {
                   loop
                   autoPlay
                 />
-              ) : (
+              ) : youtubeId ? (
                 <iframe
                   width="100%"
                   height="180"
-                  src={`https://www.youtube.com/embed/${p.url.split("v=")[1]}`}
+                  src={`https://www.youtube.com/embed/${youtubeId}`}
                   title="YouTube video"
                   frameBorder="0"
                   allowFullScreen
                 />
+              ) : (
+                <p>Invalid YouTube URL</p>
               )}
 
               <div className="promo-info">
