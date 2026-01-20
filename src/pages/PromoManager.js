@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "../styles/promoManager.css";
 
-const API_BASE = "https://ambaniyatri-admin.onrender.com"; // 🔁 change if needed
+const API_BASE = "https://ambaniyatri-admin.onrender.com";
 
 export default function PromoManager() {
   const fileInputRef = useRef(null);
@@ -13,6 +13,7 @@ export default function PromoManager() {
   const [title, setTitle] = useState("");
   const [uploading, setUploading] = useState(false);
   const [promos, setPromos] = useState([]);
+  const [youtubeUrl, setYoutubeUrl] = useState("");
 
   /* ===============================
      📥 LOAD PROMOTIONS
@@ -60,7 +61,7 @@ export default function PromoManager() {
   };
 
   /* ===============================
-     🚀 UPLOAD
+     🚀 UPLOAD FILE PROMO
   ================================ */
   const uploadPromo = async () => {
     console.log("🚀 uploadPromo clicked");
@@ -100,12 +101,39 @@ export default function PromoManager() {
       loadPromos();
     } catch (err) {
       console.error("❌ Upload error:", err?.response || err);
-      alert(
-        err?.response?.data?.message ||
-          "Upload failed (check backend logs)"
-      );
+      alert(err?.response?.data?.message || "Upload failed");
     } finally {
       setUploading(false);
+    }
+  };
+
+  /* ===============================
+     ▶ UPLOAD YOUTUBE PROMO
+  ================================ */
+  const uploadYoutubePromo = async () => {
+    console.log("▶ uploadYoutubePromo clicked");
+
+    if (!youtubeUrl) {
+      alert("Enter YouTube URL");
+      return;
+    }
+
+    try {
+      const res = await axios.post(`${API_BASE}/api/promotions/youtube`, {
+        title,
+        url: youtubeUrl,
+      });
+
+      console.log("✅ YouTube upload response:", res.data);
+
+      alert("✅ YouTube promotion added");
+
+      setYoutubeUrl("");
+      setTitle("");
+      loadPromos();
+    } catch (err) {
+      console.error("❌ YouTube upload error:", err?.response || err);
+      alert("Failed to upload YouTube promotion");
     }
   };
 
@@ -130,7 +158,7 @@ export default function PromoManager() {
   };
 
   /* ===============================
-     🧪 RENDER DEBUG
+     🧪 DEBUG RENDER
   ================================ */
   useEffect(() => {
     console.log("🎨 Rendering promos:", promos);
@@ -140,8 +168,10 @@ export default function PromoManager() {
     <div className="promo-page">
       <h1 className="page-title">🎯 Home Promotions</h1>
 
-      {/* ================= UPLOAD CARD ================= */}
+      {/* ================= FILE UPLOAD CARD ================= */}
       <div className="upload-card">
+        <h3>📤 Upload Image / Video</h3>
+
         <div
           className={`drop-zone ${preview ? "filled" : ""}`}
           onClick={() => {
@@ -151,19 +181,9 @@ export default function PromoManager() {
         >
           {preview ? (
             type === "image" ? (
-              <img
-                src={preview}
-                alt="preview"
-                onLoad={() => console.log("🖼️ Preview image loaded")}
-              />
+              <img src={preview} alt="preview" />
             ) : (
-              <video
-                src={preview}
-                controls
-                onLoadedData={() =>
-                  console.log("🎬 Preview video loaded")
-                }
-              />
+              <video src={preview} controls />
             )
           ) : (
             <p>Click or Drop Image / Video</p>
@@ -182,10 +202,7 @@ export default function PromoManager() {
           className="input"
           placeholder="Promotion title (optional)"
           value={title}
-          onChange={(e) => {
-            console.log("✏️ Title changed:", e.target.value);
-            setTitle(e.target.value);
-          }}
+          onChange={(e) => setTitle(e.target.value)}
         />
 
         <button
@@ -197,7 +214,30 @@ export default function PromoManager() {
         </button>
       </div>
 
-      {/* ================= LIST ================= */}
+      {/* ================= YOUTUBE UPLOAD CARD ================= */}
+      <div className="upload-card">
+        <h3>▶ Add YouTube Promotion</h3>
+
+        <input
+          className="input"
+          placeholder="Paste YouTube video link"
+          value={youtubeUrl}
+          onChange={(e) => setYoutubeUrl(e.target.value)}
+        />
+
+        <input
+          className="input"
+          placeholder="Promotion title (optional)"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+
+        <button className="upload-btn" onClick={uploadYoutubePromo}>
+          ▶ Add YouTube Promotion
+        </button>
+      </div>
+
+      {/* ================= PROMO LIST ================= */}
       <h2 className="section-title">📋 Active Promotions</h2>
 
       <div className="promo-grid">
@@ -207,36 +247,22 @@ export default function PromoManager() {
           return (
             <div key={p._id} className="promo-card">
               {p.type === "image" ? (
-                <img
-                  src={`${API_BASE}/api/media/${p.fileName}`}
-                  alt="promo"
-                  onLoad={() =>
-                    console.log("🖼️ Promo image loaded:", p.fileName)
-                  }
-                  onError={(e) =>
-                    console.error(
-                      "❌ Promo image load error:",
-                      p.fileName,
-                      e
-                    )
-                  }
-                />
-              ) : (
+                <img src={`${API_BASE}/api/media/${p.fileName}`} alt="promo" />
+              ) : p.type === "video" ? (
                 <video
                   src={`${API_BASE}/api/media/${p.fileName}`}
                   muted
                   loop
                   autoPlay
-                  onLoadedData={() =>
-                    console.log("🎬 Promo video loaded:", p.fileName)
-                  }
-                  onError={(e) =>
-                    console.error(
-                      "❌ Promo video load error:",
-                      p.fileName,
-                      e
-                    )
-                  }
+                />
+              ) : (
+                <iframe
+                  width="100%"
+                  height="180"
+                  src={`https://www.youtube.com/embed/${p.url.split("v=")[1]}`}
+                  title="YouTube video"
+                  frameBorder="0"
+                  allowFullScreen
                 />
               )}
 
@@ -256,4 +282,3 @@ export default function PromoManager() {
     </div>
   );
 }
-
