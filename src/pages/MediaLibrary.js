@@ -7,6 +7,7 @@ const API_BASE = "https://ambaniyatri-admin.onrender.com";
 export default function MediaLibrary() {
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
+  const [youtube, setYoutube] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // ===============================
@@ -22,17 +23,21 @@ export default function MediaLibrary() {
 
       const img = [];
       const vid = [];
+      const yt = [];
 
       res.data.forEach((item) => {
         if (item.type === "image") img.push(item);
         if (item.type === "video") vid.push(item);
+        if (item.type === "youtube") yt.push(item);
       });
 
       console.log("📸 Images:", img);
       console.log("🎬 Videos:", vid);
+      console.log("▶ YouTube:", yt);
 
       setImages(img);
       setVideos(vid);
+      setYoutube(yt);
     } catch (err) {
       console.error("❌ Failed to load media:", err);
       alert("Failed to load media library");
@@ -67,6 +72,33 @@ export default function MediaLibrary() {
     }
   };
 
+  // ===============================
+  // 🔍 EXTRACT YOUTUBE ID
+  // ===============================
+  const getYoutubeId = (url) => {
+    if (!url) return null;
+
+    if (url.includes("<iframe")) {
+      const match = url.match(/src="([^"]+)"/);
+      if (!match) return null;
+      url = match[1];
+    }
+
+    if (url.includes("/embed/")) {
+      return url.split("/embed/")[1].split("?")[0];
+    }
+
+    if (url.includes("v=")) {
+      return url.split("v=")[1].split("&")[0];
+    }
+
+    if (url.includes("youtu.be")) {
+      return url.split("youtu.be/")[1].split("?")[0];
+    }
+
+    return null;
+  };
+
   if (loading) {
     return (
       <div className="media-page">
@@ -81,9 +113,7 @@ export default function MediaLibrary() {
 
       {/* ================= IMAGES ================= */}
       <section>
-        <h2 className="section-title">
-          📸 Images ({images.length})
-        </h2>
+        <h2 className="section-title">📸 Images ({images.length})</h2>
 
         {images.length === 0 ? (
           <p className="empty-text">No images uploaded</p>
@@ -159,7 +189,52 @@ export default function MediaLibrary() {
           </div>
         )}
       </section>
+
+      {/* ================= YOUTUBE ================= */}
+      <section>
+        <h2 className="section-title" style={{ marginTop: 40 }}>
+          ▶ YouTube ({youtube.length})
+        </h2>
+
+        {youtube.length === 0 ? (
+          <p className="empty-text">No YouTube videos added</p>
+        ) : (
+          <div className="media-grid">
+            {youtube.map((yt) => {
+              const videoId = getYoutubeId(yt.url);
+
+              return (
+                <div key={yt._id} className="media-card">
+                  {videoId ? (
+                    <iframe
+                      width="100%"
+                      height="180"
+                      src={`https://www.youtube.com/embed/${videoId}`}
+                      title="YouTube video"
+                      frameBorder="0"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <p>Invalid YouTube URL</p>
+                  )}
+
+                  <div className="media-info">
+                    <span>{yt.title || "Untitled YouTube video"}</span>
+                    <button
+                      className="delete-btn"
+                      onClick={() =>
+                        deleteMedia(yt._id, "YouTube video")
+                      }
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
     </div>
   );
 }
-
